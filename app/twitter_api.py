@@ -12,25 +12,33 @@ https://dev.twitter.com/docs/auth/tokens-devtwittercom
 """
 # Global auth vars
 CONSUMER_KEY = ''
-CONSUMER_SECRET =''
+CONSUMER_SECRET = ''
 OAUTH_TOKEN = ''
 OAUTH_TOKEN_SECRET = ''
 
-class Twitter_Api:
+
+class TwitterApi:
 
     def __init__(self):
-        self.auth = twitter.oauth.OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
-        # create twitter object
+        """
+        constructor method gets called when class is instantiated
+        we create our twitter object that takes our oauth tokens
+        so we can use our auth credentials in different resources
+        the Twitter REST API
+        """
+        self.auth = twitter.oauth.OAuth(
+            OAUTH_TOKEN, OAUTH_TOKEN_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
         self.twitter_object = twitter.Twitter(auth=self.auth)
 
     def search_tweets(self, search_query, count):
         """
         Search twitter for statuses - ony GET requests available
+        See https://dev.twitter.com/docs/api/1.1/get/search/tweets
         @search_query: hashtag you want see statuses of.
         @count: limit of returned statuses
         """
-        # See https://dev.twitter.com/docs/api/1.1/get/search/tweets
-        search_results = self.twitter_object.search.tweets(q=search_query, count=count)
+        search_results = self.twitter_object.search.tweets(
+            q=search_query, count=count)
         # returns only statuses
         statuses = search_results['statuses']
 
@@ -39,7 +47,6 @@ class Twitter_Api:
             if status['retweeted']:
                 print "retweeted: ", status['retweeted']
             print "user description: ", status['user']['description']
-
             return status
 
     def search_status(self, twitter_id, count):
@@ -49,12 +56,13 @@ class Twitter_Api:
         To get your Twitter Id
         http://www.idfromuser.com/
         """
-        status_results = self.twitter_object.statuses.retweets_of_me(since_id=twitter_id, count=count)
+        status_results = self.twitter_object.statuses.retweets_of_me(
+            since_id=twitter_id, count=count)
         print status_results
 
-
-twitter_api = Twitter_Api()
+# Create instance of class
+twitter_api = TwitterApi()
+# Methods bound to class twitter_api
 twitter_api.search_tweets('#RaspberryPi', 5)
 twitter_api.search_tweets('RaspberryPi', 5)
-
 twitter_api.search_status('158594198', 5)
