@@ -49,15 +49,13 @@ class TwitterApi:
             print "user description: ", status['user']['description']
             return status
 
-    def search_status(self, twitter_id, count):
+    def search_status(self, count):
         """
         To retrieve retweets of your Tweets
         https://dev.twitter.com/docs/api/1.1/get/statuses/retweets_of_me
-        To get your Twitter Id
-        http://www.idfromuser.com/
         """
         status_results = self.twitter_object.statuses.retweets_of_me(
-            since_id=twitter_id, count=count)
+            count=count)
         print status_results
 
 # Create instance of class
@@ -65,4 +63,4 @@ twitter_api = TwitterApi()
 # Methods bound to class twitter_api
 twitter_api.search_tweets('#RaspberryPi', 5)
 twitter_api.search_tweets('RaspberryPi', 5)
-twitter_api.search_status('158594198', 5)
+twitter_api.search_status(5)
