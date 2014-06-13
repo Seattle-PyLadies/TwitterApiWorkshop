@@ -52,7 +52,7 @@ class TwitterApi:
     def search_status(self, count):
         """
         To retrieve retweets of your Tweets
-        https://dev.twitter.com/docs/api/1.1/get/statuses/retweets_of_me
+        https://dev.twitter.com/docs/api/1.1/get/statuses/se
         """
         status_results = self.twitter_object.statuses.retweets_of_me(
             count=count)
