@@ -18,6 +18,12 @@ OAUTH_TOKEN_SECRET = ''
 
 
 class TwitterApi:
+    """
+    Use the Twitter API to query and update Tweets
+
+    Resource families include: Search and Statuses
+    Response is JSON
+    """
 
     def __init__(self):
         """
@@ -59,11 +65,11 @@ class TwitterApi:
 
     def search_status(self, count):
         """
-        Queries Twitter timelines resource of consumer token related retweets
+        Queries Twitter timeline statuses resource of consumer token related retweets
 
         @count: limit of returned statuses
         """
-        # Resources regarding Timelines
+        # Resources regarding Statuses
         # To retrieve retweets of your Tweets - GET request
         # https://dev.twitter.com/docs/api/1.1/get/statuses/se
         status_results = self.twitter_object.statuses.retweets_of_me(
@@ -72,11 +78,11 @@ class TwitterApi:
 
     def update_status(self, status):
         """
-        Updates twitter feed by creating new tweet
+        Updates authenticated users twitter feed by creating new tweet
 
         @status:
         """
-        # Resources regarding Tweets
+        # Resources regarding Statuses
         # Updates Twitter status (creates a new Tweet) - POST request
         # https://dev.twitter.com/docs/api/1.1/post/statuses/update
         pass
