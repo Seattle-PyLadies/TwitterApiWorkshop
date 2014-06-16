@@ -31,3 +31,5 @@ from Twitter.
 https://dev.twitter.com/docs/auth/obtaining-access-tokens
 All we need is to use the dev auth tokens and the
 https://dev.twitter.com/docs/auth/tokens-devtwittercom
+
+TODO: add curl commands to access tweets through command line before getting into tutorial

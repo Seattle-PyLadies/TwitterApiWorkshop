@@ -21,22 +21,30 @@ class TwitterApi:
 
     def __init__(self):
         """
-        constructor method gets called when class is instantiated
-        we create our twitter object that takes our oauth tokens
-        so we can use our auth credentials in different resources
-        the Twitter REST API
+        Uses Twitter provided tokens to authenticate and connect to twitter API
+
+        Pass in OAuth and consumer tokens to twitter Oauth class
+        and connect as authenticated to the twitter API object
+        for queries in search, timelines and tweet resources
         """
+        # constructor method gets called when class is instantiated
+        # we create our twitter object that takes our oauth tokens
+        # so we can use our auth credentials in different resources
+        # from the Twitter REST API
         self.auth = twitter.oauth.OAuth(
             OAUTH_TOKEN, OAUTH_TOKEN_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
         self.twitter_object = twitter.Twitter(auth=self.auth)
 
     def search_tweets(self, search_query, count):
         """
-        Search twitter for statuses - ony GET requests available
-        See https://dev.twitter.com/docs/api/1.1/get/search/tweets
+        Queries Twitters search resource for statuses by keyword or hashtag
+
         @search_query: hashtag you want see statuses of.
         @count: limit of returned statuses
         """
+        # Resources regarding Search
+        # Search twitter for statuses - ony GET requests available
+        # See https://dev.twitter.com/docs/api/1.1/get/search/tweets
         search_results = self.twitter_object.search.tweets(
             q=search_query, count=count)
         # returns only statuses
@@ -51,12 +59,27 @@ class TwitterApi:
 
     def search_status(self, count):
         """
-        To retrieve retweets of your Tweets
-        https://dev.twitter.com/docs/api/1.1/get/statuses/se
+        Queries Twitter timelines resource of consumer token related retweets
+
+        @count: limit of returned statuses
         """
+        # Resources regarding Timelines
+        # To retrieve retweets of your Tweets - GET request
+        # https://dev.twitter.com/docs/api/1.1/get/statuses/se
         status_results = self.twitter_object.statuses.retweets_of_me(
             count=count)
         print status_results
+
+    def update_status(self, status):
+        """
+        Updates twitter feed by creating new tweet
+
+        @status:
+        """
+        # Resources regarding Tweets
+        # Updates Twitter status (creates a new Tweet) - POST request
+        # https://dev.twitter.com/docs/api/1.1/post/statuses/update
+        pass
 
 # Create instance of class
 twitter_api = TwitterApi()
