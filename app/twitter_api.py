@@ -9,6 +9,9 @@ from Twitter.
 https://dev.twitter.com/docs/auth/obtaining-access-tokens
 All we need is to use testing tokens
 https://dev.twitter.com/docs/auth/tokens-devtwittercom
+Under Application settings under Access Level: Read, write, and direct messages
+If you want to have write access then you now have to go to your Twitter profile
+Then enable mobile (I have all notifactions unchecked)
 """
 # Global auth vars
 CONSUMER_KEY = ''
@@ -76,7 +79,7 @@ class TwitterApi:
             count=count)
         print status_results
 
-    def update_status(self, status):
+    def update_status(self, my_status):
         """
         Updates authenticated users twitter feed by creating new tweet
 
@@ -85,7 +88,8 @@ class TwitterApi:
         # Resources regarding Statuses
         # Updates Twitter status (creates a new Tweet) - POST request
         # https://dev.twitter.com/docs/api/1.1/post/statuses/update
-        pass
+        update_status = self.twitter_object.statuses.update(status=my_status)
+        return update_status
 
 # Create instance of class
 twitter_api = TwitterApi()
@@ -93,3 +97,4 @@ twitter_api = TwitterApi()
 twitter_api.search_tweets('#RaspberryPi', 5)
 twitter_api.search_tweets('RaspberryPi', 5)
 twitter_api.search_status(5)
+twitter_api.update_status("I love Python")
