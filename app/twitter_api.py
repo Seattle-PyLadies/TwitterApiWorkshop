@@ -1,4 +1,5 @@
 import twitter
+import nltk
 
 # API and OAuth creds
 
@@ -14,13 +15,14 @@ If you want to have write access then you now have to go to your Twitter profile
 Then enable mobile (I have all notifactions unchecked)
 """
 # Global auth vars
-CONSUMER_KEY = ''
-CONSUMER_SECRET = ''
-OAUTH_TOKEN = ''
-OAUTH_TOKEN_SECRET = ''
+# CONSUMER_KEY = ''
+# CONSUMER_SECRET = ''
+# OAUTH_TOKEN = ''
+# OAUTH_TOKEN_SECRET = ''
 
 
 class TwitterApi:
+
     """
     Use the Twitter API to query and update Tweets
 
@@ -60,11 +62,12 @@ class TwitterApi:
         statuses = search_results['statuses']
 
         for status in statuses:
-            print "status text : ", status['text']
             if status['retweeted']:
                 print "retweeted: ", status['retweeted']
-            print "user description: ", status['user']['description']
-            return status
+            if status['user']['description']:
+                print "user description: ", status['user']['description']
+            print "text status", status['text']
+
 
     def search_status(self, count):
         """
@@ -77,7 +80,7 @@ class TwitterApi:
         # https://dev.twitter.com/docs/api/1.1/get/statuses/se
         status_results = self.twitter_object.statuses.retweets_of_me(
             count=count)
-        print status_results
+        return status_results
 
     def update_status(self, my_status):
         """
@@ -91,10 +94,34 @@ class TwitterApi:
         update_status = self.twitter_object.statuses.update(status=my_status)
         return update_status
 
+    def plot_status(self, search_query, count):
+        search_results = self.twitter_object.search.tweets(
+            q=search_query, count=count)
+        statuses = search_results['statuses']
+
+        text_status = []
+
+        for status in statuses:
+            encoded_file = status['text'].encode('ascii', 'ignore')
+            text_status.append(encoded_file)
+        s = ''
+        corpus = s.join(text_status)
+
+        tokenized_words = nltk.word_tokenize(corpus.lower())
+        print tokenized_words
+        nltk.draw.dispersion.dispersion_plot(tokenized_words, ['analytics', 'python', 'bigdata', 'machinelearning', 'math', 'stem', 'statistics'])
+
+
+
 # Create instance of class
 twitter_api = TwitterApi()
 # Methods bound to class twitter_api
-twitter_api.search_tweets('#RaspberryPi', 5)
-twitter_api.search_tweets('RaspberryPi', 5)
+twitter_api.search_tweets('#Python', 20)
+twitter_api.search_tweets('#javascript', 20)
+
 twitter_api.search_status(5)
+
 twitter_api.update_status("I love Python")
+
+twitter_api.plot_status('#datascience', 40)
+
