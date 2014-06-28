@@ -1,6 +1,6 @@
 import twitter
 import nltk
-
+import json
 # API and OAuth creds
 
 """
@@ -15,10 +15,10 @@ If you want to have write access then you now have to go to your Twitter profile
 Then enable mobile (I have all notifactions unchecked)
 """
 # Global auth vars
-# CONSUMER_KEY = ''
-# CONSUMER_SECRET = ''
-# OAUTH_TOKEN = ''
-# OAUTH_TOKEN_SECRET = ''
+CONSUMER_KEY = ''
+CONSUMER_SECRET = ''
+OAUTH_TOKEN = ''
+OAUTH_TOKEN_SECRET = ''
 
 
 class TwitterApi:
@@ -62,12 +62,11 @@ class TwitterApi:
         statuses = search_results['statuses']
 
         for status in statuses:
-            if status['retweeted']:
-                print "retweeted: ", status['retweeted']
-            if status['user']['description']:
-                print "user description: ", status['user']['description']
-            print "text status", status['text']
-
+            # if status['retweeted']:
+            #     print "retweeted: ", status['retweeted']
+            # if status['user']['description']:
+            #     print "user description: ", status['user']['description']
+            print json.dumps(status['text'], indent=4)
 
     def search_status(self, count):
         """
@@ -86,15 +85,22 @@ class TwitterApi:
         """
         Updates authenticated users twitter feed by creating new tweet
 
-        @status:
+        @my_status: String
         """
         # Resources regarding Statuses
         # Updates Twitter status (creates a new Tweet) - POST request
         # https://dev.twitter.com/docs/api/1.1/post/statuses/update
-        update_status = self.twitter_object.statuses.update(status=my_status)
-        return update_status
+        update_status_results = self.twitter_object.statuses.update(
+            status=my_status)
+        return update_status_results
 
     def plot_status(self, search_query, count):
+        """
+        Create dispersion plot from search resource filtering by status
+
+        @search_query: hashtag or other string to query
+        @count: number of results
+        """
         search_results = self.twitter_object.search.tweets(
             q=search_query, count=count)
         statuses = search_results['statuses']
@@ -102,15 +108,17 @@ class TwitterApi:
         text_status = []
 
         for status in statuses:
+            # convert unicode to ascii
             encoded_file = status['text'].encode('ascii', 'ignore')
             text_status.append(encoded_file)
         s = ''
+        # create proper corpus to tokenize from the various statuses
         corpus = s.join(text_status)
 
         tokenized_words = nltk.word_tokenize(corpus.lower())
         print tokenized_words
-        nltk.draw.dispersion.dispersion_plot(tokenized_words, ['analytics', 'python', 'bigdata', 'machinelearning', 'math', 'stem', 'statistics'])
-
+        nltk.draw.dispersion.dispersion_plot(
+            tokenized_words, ['analytics', 'python', 'bigdata', 'machinelearning', 'math', 'stem', 'statistics'])
 
 
 # Create instance of class
@@ -124,4 +132,3 @@ twitter_api.search_status(5)
 twitter_api.update_status("I love Python")
 
 twitter_api.plot_status('#datascience', 40)
-
