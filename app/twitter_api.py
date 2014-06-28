@@ -15,10 +15,14 @@ If you want to have write access then you now have to go to your Twitter profile
 Then enable mobile (I have all notifactions unchecked)
 """
 # Global auth vars
-CONSUMER_KEY = ''
-CONSUMER_SECRET = ''
-OAUTH_TOKEN = ''
-OAUTH_TOKEN_SECRET = ''
+# CONSUMER_KEY = ''
+# CONSUMER_SECRET = ''
+# OAUTH_TOKEN = ''
+# OAUTH_TOKEN_SECRET = ''
+CONSUMER_KEY = 'C9tTRMqmTi3eAkAEmFx0W92JY'
+CONSUMER_SECRET = 'rtukqdLGU8MqWdhVunlS3Wt00J1JcQkxG9pNxDwHxNwZBtJk1s'
+OAUTH_TOKEN = '158594198-0kbfhYsQnGnuJDKVSVHaQxSVo5O6UEQGS9uo8FO8'
+OAUTH_TOKEN_SECRET = 'CAYid0vCqqLvu34eH5rtHrZdngfGNSBBMix6QQk30uD5Z'
 
 
 class TwitterApi:
@@ -90,8 +94,7 @@ class TwitterApi:
         # Resources regarding Statuses
         # Updates Twitter status (creates a new Tweet) - POST request
         # https://dev.twitter.com/docs/api/1.1/post/statuses/update
-        update_status_results = self.twitter_object.statuses.update(
-            status=my_status)
+        update_status_results = self.twitter_object.statuses.update(status=my_status)
         return update_status_results
 
     def plot_status(self, search_query, count):
@@ -120,15 +123,35 @@ class TwitterApi:
         nltk.draw.dispersion.dispersion_plot(
             tokenized_words, ['analytics', 'python', 'bigdata', 'machinelearning', 'math', 'stem', 'statistics'])
 
+    def search_trends(self, location_id):
+        """
+        Search for trends
+
+        """
+        # Resources regarding Trends
+        # Checks for trends based on WOEID, for example global id = 1
+        # returns top 10 trends
+        # https://dev.twitter.com/docs/api/1.1/get/trends/place
+        trends_results = self.twitter_object.trends.place(_id=location_id)
+        print json.dumps(trends_results, indent=4)
+
 
 # Create instance of class
 twitter_api = TwitterApi()
 # Methods bound to class twitter_api
-twitter_api.search_tweets('#Python', 20)
-twitter_api.search_tweets('#javascript', 20)
+# twitter_api.search_tweets('#Python', 20)
+# twitter_api.search_tweets('#javascript', 20)
 
-twitter_api.search_status(5)
+# twitter_api.search_status(5)
 
-twitter_api.update_status("I love Python")
+# twitter_api.update_status("I love Python")
 
-twitter_api.plot_status('#datascience', 40)
+# twitter_api.plot_status('#datascience', 40)
+
+# add curl commands to access tweets
+# after POST search status
+# add comments about basic programming shit like init
+# add trend query OR Friends & Followers
+# add one more nltk thingy
+
+twitter_api.search_trends(1)
