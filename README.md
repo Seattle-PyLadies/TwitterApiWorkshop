@@ -16,18 +16,18 @@ pip install twitter
 ```
 And since we are going to do some fun stuff with our Twitter data, lets install nltk and it's dependencies!
 http://www.nltk.org/install.html
-'''
+```
 pip install numpy
 pip install pyyaml nltk
 pip install matplotlib
-'''
+```
 Lets check our installs:
-'''
+```
 python
 import numpy
 import nltk
 import matplotlib
-'''
+```
 You shouldn't see any errors or any messages if they are correctly installed.
 And create a requirements.txt file so we can keep track of our installed libraries!
 ```
