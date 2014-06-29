@@ -10,6 +10,11 @@ Then we'll create and activate our virtual environment
 virtualenv -p python2.7 tut_env
 source tut_env/bin/activate
 ```
+If you don't want or have virtualenv then install pip and the rest globally
+http://pip.readthedocs.org/en/latest/installing.html
+```
+python get-pip.py
+```
 Now download the Twitter library
 ```
 pip install twitter
@@ -39,5 +44,3 @@ mkdir app
 cd app
 touch twitter_api.py
 ```
-
-

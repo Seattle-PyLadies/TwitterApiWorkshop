@@ -1,6 +1,7 @@
 import twitter
 import nltk
 import json
+import string
 # API and OAuth creds
 
 """
@@ -15,10 +16,14 @@ If you want to have write access then you now have to go to your Twitter profile
 Then enable mobile (I have all notifactions unchecked)
 """
 # Global auth vars
-CONSUMER_KEY = ''
-CONSUMER_SECRET = ''
-OAUTH_TOKEN = ''
-OAUTH_TOKEN_SECRET = ''
+# CONSUMER_KEY = ''
+# CONSUMER_SECRET = ''
+# OAUTH_TOKEN = ''
+# OAUTH_TOKEN_SECRET = ''
+CONSUMER_KEY = 'C9tTRMqmTi3eAkAEmFx0W92JY'
+CONSUMER_SECRET = 'rtukqdLGU8MqWdhVunlS3Wt00J1JcQkxG9pNxDwHxNwZBtJk1s'
+OAUTH_TOKEN = '158594198-0kbfhYsQnGnuJDKVSVHaQxSVo5O6UEQGS9uo8FO8'
+OAUTH_TOKEN_SECRET = 'CAYid0vCqqLvu34eH5rtHrZdngfGNSBBMix6QQk30uD5Z'
 
 
 class TwitterApi:
@@ -54,7 +59,7 @@ class TwitterApi:
         @count: limit of returned statuses
         """
         # Resources regarding Search
-        # Search twitter for statuses - ony GET requests available
+        # Search twitter for statuses - ony GET requests available, last 6-9 days of tweets
         # See https://dev.twitter.com/docs/api/1.1/get/search/tweets
         search_results = self.twitter_object.search.tweets(
             q=search_query, count=count)
@@ -66,7 +71,7 @@ class TwitterApi:
             #     print "retweeted: ", status['retweeted']
             # if status['user']['description']:
             #     print "user description: ", status['user']['description']
-            print json.dumps(status['text'], indent=4)
+            print json.dumps(status['text'], indent=4) + '\n'
 
     def search_status(self, count):
         """
@@ -79,7 +84,10 @@ class TwitterApi:
         # https://dev.twitter.com/docs/api/1.1/get/statuses/se
         status_results = self.twitter_object.statuses.retweets_of_me(
             count=count)
-        return status_results
+        # to see the whole json object with metadata
+        # print json.dumps(status_results, indent=4)
+        for status in status_results:
+            print json.dumps(status['text'], indent=4) + '\n'
 
     def update_status(self, my_status):
         """
@@ -94,7 +102,7 @@ class TwitterApi:
             status=my_status)
         return update_status_results
 
-    def plot_status(self, search_query, count):
+    def plot_status(self, search_query, count, result_type):
         """
         Create dispersion plot from search resource filtering by status
 
@@ -102,7 +110,7 @@ class TwitterApi:
         @count: number of results
         """
         search_results = self.twitter_object.search.tweets(
-            q=search_query, count=count)
+            q=search_query, count=count, result_type=result_type)
         statuses = search_results['statuses']
 
         text_status = []
@@ -115,20 +123,38 @@ class TwitterApi:
         # create proper corpus to tokenize from the various statuses
         corpus = s.join(text_status)
 
-        tokenized_words = nltk.word_tokenize(corpus.lower())
+        tokenized_words = nltk.word_tokenize(
+            (corpus.lower()).translate(None, string.punctuation))
+
         print tokenized_words
+        # plot the distribution of the words in a search for #datascience in
+        # order they appear in corpus
         nltk.draw.dispersion.dispersion_plot(
             tokenized_words, ['analytics', 'python', 'bigdata', 'machinelearning', 'math', 'stem', 'statistics'])
+
+        # Frequency distribution plot for 50 most frequent words in our corpus
+        # (sliced at first 50 words)
+        freq_dist_words = nltk.FreqDist(tokenized_words)
+        freq_dist_words.plot(50)
+
 
 
 # Create instance of class
 twitter_api = TwitterApi()
 # Methods bound to class twitter_api
-twitter_api.search_tweets('#Python', 20)
-twitter_api.search_tweets('#javascript', 20)
+twitter_api.search_tweets('#Python', 5)
+twitter_api.search_tweets('#javascript', 5)
 
+# gets random 5 tweets from your tweets
 twitter_api.search_status(5)
 
+# post a new tweet
 twitter_api.update_status("I love Python")
 
+# check you updated status
+twitter_api.search_status(1)
+
 twitter_api.plot_status('#datascience', 40)
+
+twitter_api.plot_status('#datascience', 40, 'popular')
+
