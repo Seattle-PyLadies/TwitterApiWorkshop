@@ -16,14 +16,10 @@ If you want to have write access then you now have to go to your Twitter profile
 Then enable mobile (I have all notifactions unchecked)
 """
 # Global auth vars
-# CONSUMER_KEY = ''
-# CONSUMER_SECRET = ''
-# OAUTH_TOKEN = ''
-# OAUTH_TOKEN_SECRET = ''
-CONSUMER_KEY = 'C9tTRMqmTi3eAkAEmFx0W92JY'
-CONSUMER_SECRET = 'rtukqdLGU8MqWdhVunlS3Wt00J1JcQkxG9pNxDwHxNwZBtJk1s'
-OAUTH_TOKEN = '158594198-0kbfhYsQnGnuJDKVSVHaQxSVo5O6UEQGS9uo8FO8'
-OAUTH_TOKEN_SECRET = 'CAYid0vCqqLvu34eH5rtHrZdngfGNSBBMix6QQk30uD5Z'
+CONSUMER_KEY = ''
+CONSUMER_SECRET = ''
+OAUTH_TOKEN = ''
+OAUTH_TOKEN_SECRET = ''
 
 
 class TwitterApi:
