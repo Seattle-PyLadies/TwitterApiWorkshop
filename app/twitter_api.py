@@ -98,7 +98,7 @@ class TwitterApi:
             status=my_status)
         return update_status_results
 
-    def plot_status(self, search_query, count, result_type):
+    def plot_status(self, search_query, count):
         """
         Create dispersion plot from search resource filtering by status
 
@@ -106,7 +106,7 @@ class TwitterApi:
         @count: number of results
         """
         search_results = self.twitter_object.search.tweets(
-            q=search_query, count=count, result_type=result_type)
+            q=search_query, count=count)
         statuses = search_results['statuses']
 
         text_status = []
@@ -152,5 +152,6 @@ twitter_api.search_status(1)
 
 twitter_api.plot_status('#datascience', 40)
 
-twitter_api.plot_status('#datascience', 40, 'popular')
+
+twitter_api.plot_status('#datascience', 40)
 
