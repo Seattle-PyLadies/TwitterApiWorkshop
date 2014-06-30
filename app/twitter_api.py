@@ -69,7 +69,7 @@ class TwitterApi:
             #     print "user description: ", status['user']['description']
             print json.dumps(status['text'], indent=4) + '\n'
 
-    def search_status(self, count):
+    def search_retweets(self, count):
         """
         Queries Twitter timeline statuses resource of consumer token related retweets
 
@@ -142,16 +142,15 @@ twitter_api.search_tweets('#Python', 5)
 twitter_api.search_tweets('#javascript', 5)
 
 # gets random 5 tweets from your tweets
-twitter_api.search_status(5)
+twitter_api.search_retweets(5)
 
 # post a new tweet
 twitter_api.update_status("I love Python")
 
 # check you updated status
-twitter_api.search_status(1)
+twitter_api.search_retweets(1)
 
 twitter_api.plot_status('#datascience', 40)
-
 
 twitter_api.plot_status('#datascience', 40)
 
